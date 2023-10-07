@@ -1,0 +1,147 @@
+:root {
+	--primary-color: rgba(255, 255, 255);
+	--second-color: linear-gradient(to right top,
+			rgb(33, 33, 33),
+			rgb(66, 66, 66));
+}
+
+* {
+	box-sizing: border-box;
+}
+
+button {
+	background: transparent;
+	border: 0;
+	padding: 0;
+	cursor: pointer;
+}
+
+.sidebar {
+	position: fixed;
+	overflow: hidden;
+	top: 0;
+	left: 0;
+	width: 60px;
+	height: 100%;
+	background: var(--second-color);
+	transition: width 0.4s;
+	z-index: 100;
+}
+
+.sidebar.open {
+	width: 240px;
+}
+
+.sidebar-inner {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 240px;
+}
+
+.sidebar-header {
+	display: flex;
+	align-items: center;
+	height: 72px;
+	background: rgb(0 0 0 / 15%);
+}
+
+.sidebar-burger {
+	width: 60px;
+	height: 72px;
+	display: grid;
+	place-items: center;
+	color: #f9f9f9;
+}
+
+.sidebar-logo {
+	height: 28px;
+}
+
+.sidebar-menu {
+	display: grid;
+	padding: 10px 0;
+}
+
+.sidebar-button {
+	display: flex;
+	gap: 16px;
+	align-items: center;
+	height: 56px;
+	width: 100%;
+	text-transform: capitalize;
+	line-height: 1;
+	padding: 0 17px;
+	border-radius: 8px;
+	color: #f9f9f9;
+	opacity: 0.8;
+}
+
+.sidebar-button:hover {
+	background: rgb(0 0 0 / 30%);
+	opacity: 1;
+}
+
+.sidebar-button:hover>span {
+	opacity: 1;
+}
+
+.sidebar-logo,
+.sidebar-button p {
+	opacity: 0;
+	transition: 0.3s;
+}
+
+.sidebar.open :is(.sidebar-button p, .sidebar-logo) {
+	opacity: 1;
+}
+
+.sidebar-button>img {
+	width: 24px;
+	height: 24px;
+}
+
+.sidebar-button>span {
+	opacity: 0.5;
+}
+
+@media (width < 1200px) {
+    .sidebar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 70px;
+        border-bottom-left-radius: 6px ;
+        border-bottom-right-radius: 4px ;
+		background-image:transparent;
+		background:transparent;
+		transition: height 0.4s;
+
+		.sidebar-inner,
+		.sidebar-header,
+		.sidebar-menu,
+		.sidebar-button,
+		.sidebar-burger {
+			background-image: transparent;
+			background: transparent;
+		}
+	}
+
+	.sidebar.open {
+		height: 400px;
+		width: 100%;
+		overflow-y: scroll;
+		background-image: var(--second-color);
+	}
+
+	.sidebar::-webkit-scrollbar {
+		display: none;
+	}
+
+	.sidebar-header,
+	.sidebar-inner,
+	.sidebar-menu {
+		width: 100vw;
+	}
+}
