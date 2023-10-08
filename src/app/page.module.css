@@ -14,7 +14,7 @@
     box-shadow: 5px;
     margin-left:auto;
     margin-right: auto;
-    max-width: 23rem;
+    width: 22rem;
 }
 .inputs{
     margin: 24px;
@@ -137,9 +137,14 @@
     font-size: var(--font-size);
     font-family: var(--font-family);
     font-stretch: 100%;
-    font-weight: 600;
-    color: rgb(1, 42, 81);
 }
-.esGuapo{
-    margin-bottom: -0.7rem;
+.signUpLink{
+    width:fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    border-bottom:thin solid grey;
+    border-top: thin solid grey;
+}
+.signUpLink b{
+    cursor: pointer;
 }

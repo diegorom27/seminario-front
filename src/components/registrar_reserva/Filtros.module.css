@@ -1,0 +1,52 @@
+.table{
+    background: var(--primary-color);
+    border-radius: 0.5rem;
+    width: 100%;
+}
+
+.table thead{
+    position: sticky;
+    top: 0;
+    width: max-content;
+}
+.table th,
+.table td{
+    padding: 1rem;
+} 
+.table th{
+    font-size: 12px;
+    font-style:normal;
+    font-weight: 700;
+    text-align: left;
+}
+.table tr{
+    background: inherit;
+    border-bottom: thin solid #d0d0d0;
+    font-size: .875rem;
+    border-collapse: collapse;
+}
+.table thead:first-child{
+    background:rgb(236, 239, 241);
+}
+.table button{
+    background-image: var(--second-color);
+    border-radius: 4px;
+    color: var(--primary-color);
+    font-weight: 100;
+    font-size: 14px;
+    padding: 0.3rem 0.4rem;
+}
+
+.table input[type='checkbox']{
+    cursor: pointer;
+}
+.table input{
+    background: rgba(0, 0, 0, 0);
+    border:1px solid rgb(176, 190, 197);
+    font-stretch:100%;
+    font-weight: 400;
+    tab-size: 4;
+    height: 44px;
+    border-radius: 6px;
+    padding: 0.7rem;
+}

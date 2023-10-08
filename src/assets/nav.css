@@ -92,6 +92,16 @@ button {
 	transition: 0.3s;
 }
 
+.inner-btn{
+	display: flex;
+	flex-direction: row;
+	gap: 0.4rem;
+	height: fit-content;
+}
+.inner-btn *{
+	align-self:center;
+}
+
 .sidebar.open :is(.sidebar-button p, .sidebar-logo) {
 	opacity: 1;
 }
@@ -129,10 +139,32 @@ button {
 	}
 
 	.sidebar.open {
-		height: 400px;
+		min-height: 100vh;
+		height: fit-content;
 		width: 100%;
-		overflow-y: scroll;
 		background-image: var(--second-color);
+		overflow-y: scroll;
+
+		.sidebar-button{
+			display: flex;
+			flex-direction: column;
+			margin-left: auto;
+			margin-right: auto;
+			justify-content: center;
+		}
+		.inner-btn{
+			display: flex;
+			flex-direction: row;
+			gap: 0.4rem;
+			height: fit-content;
+		}
+		.inner-btn *{
+			align-self:center;
+		}
+		.sidebar-button:hover {
+			background: rgb(0 0 0 / 30%);
+			opacity: 1;
+		}
 	}
 
 	.sidebar::-webkit-scrollbar {

@@ -4,24 +4,8 @@ import '../../assets/nav.css'
 import { useState } from 'react'
 
 // sysmbols ->https://fonts.google.com/icons?hl=es-419
-const routes = [
-  {
-    name: 'Log in',
-    path: '/',
-    symbol: 'Home'
-  },
-  {
-    name: 'Registro',
-    path: '/registro',
-    symbol: 'token'
-  }, {
-    name: 'Dashboard',
-    path: '/dashboard',
-    symbol: 'token'
-  }
-]
 
-const NavBar = () => {
+const NavBar = ({routes}) => {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
@@ -43,8 +27,10 @@ const NavBar = () => {
 								onClick={() => { setIsOpen(!isOpen) }}>
 							<Link href={el.path}
 								className="sidebar-button">
-								<span className="material-symbols-outlined">{el.symbol}</span>
-								<p>{el.name}</p>
+								<div className='inner-btn'>	
+									<span className="material-symbols-outlined">{el.symbol}</span>
+									<p>{el.name}</p>
+								</div>
 							</Link>
 						</button>
 					))}

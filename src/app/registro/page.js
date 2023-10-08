@@ -1,5 +1,5 @@
 'use client'
-import { post } from '@/helpers/helperHttp'
+import { post } from '../../helpers/helperHttp'
 import styles from './page.module.css'
 import useForm from '../../components/CustomHooks/useForm'
 import server from '../../assets/server.js'
@@ -56,8 +56,6 @@ const submit=async({correo,password,esGuapo})=>{
         }
     })
 } 
-
-
 
 const FormularioRegistro=()=>{
     
