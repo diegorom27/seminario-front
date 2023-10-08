@@ -20,14 +20,16 @@ const RegistrarReserva=()=>{
     const [selectedFiltroOption,setSelectedFiltroOption]=useState(null)
     const [filtrosOptions,setFiltrosOptions]=useState([])
 
+    const [disabled,setDisabled]=useState(false)
+
     useEffect(()=>{
         /*fetch tipos*/
         setTiposOptions(tiposProvisional)
     },[])
     useEffect(()=>{
         if(selectedTipoOption==null)return
-        console.log('hola')
         /*fetch opciones de Filtros*/
+        setDisabled(true)
         setFiltrosOptions(filtrosProvisionales)
     },[selectedTipoOption])
 
@@ -59,6 +61,8 @@ const RegistrarReserva=()=>{
 
     const [filtros,setFiltros] = useState([])
 
+    const [filtrosVal,setFiltrosVal]=useState({})
+
     const handleFiltros=(e)=>{
         e.preventDefault()
         if(selectedFiltroOption==null)return 
@@ -68,10 +72,23 @@ const RegistrarReserva=()=>{
         setFiltros([...filtros,{name:selectedFiltroOption,
                                 values:['hola','ohla','aloh','halo']}])
     }
-
-
-
     
+    const handleFiltrosValores=(vals)=>{
+        setFiltrosVal(vals)
+    }
+
+
+    const handleSubmit=(e)=>{
+        e.preventDefault()
+        console.log({
+            selectedTipoOption,
+            cronograma,
+            filtrosVal
+        })
+    }
+
+
+
     return(
         <div className={styles.container}>
             <h2 className={styles.title}>Realizar reserva</h2>
@@ -82,11 +99,13 @@ const RegistrarReserva=()=>{
                         <CustomSelect styles={styles}
                                       options={tiposOptions}
                                       handleChange={handleChangeTipo}
-                                      text={'Tipos'}/>
+                                      text={'Tipos'}
+                                      disabled={disabled}/>
                         <CustomSelect styles={styles}
                                       options={filtrosOptions}
                                       handleChange={handleChangeFiltroDeseado}
-                                      text={'Filtros deseados'}/>
+                                      text={'Filtros deseados'}
+                                      disabled={false}/>
                     </div>
                     <button type='button' 
                             onClick={(e)=>handleFiltros(e)}
@@ -107,7 +126,8 @@ const RegistrarReserva=()=>{
                                 className={styles.button}>Add date</button>   
                         <section className={styles.section}>
                             {
-                                <Filtros filtros={filtros}/>
+                                <Filtros filtros={filtros} 
+                                          handleFiltrosValores={handleFiltrosValores}/>
                             }
                         </section>
                         <button type='submit' 

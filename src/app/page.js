@@ -83,7 +83,7 @@ export default function Home() {
   const router = useRouter()
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className={styles.container}>
         <form className={styles.form+' '+styles.boxShadow}
             onSubmit={(e)=>handleSubmit(e)}>
           <div className={styles.title+' '+styles.flexCol+' '+styles.boxShadow}>

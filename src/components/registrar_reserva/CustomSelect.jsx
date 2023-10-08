@@ -1,6 +1,6 @@
 'use client'
 
-const CustomSelect=({styles,options,handleChange,text})=>{
+const CustomSelect=({styles,options,handleChange,text,disabled})=>{
     const k = text.trim()
     return(
         <div className={styles.select}>
@@ -10,7 +10,9 @@ const CustomSelect=({styles,options,handleChange,text})=>{
             <select name={"filtros"+k}
                     id={"filtros"+k} 
                     className={styles.select}
-                    onChange={(e)=>handleChange(e)}>
+                    onChange={(e)=>handleChange(e)}
+                    disabled={disabled}
+                    readonly>
                 {
                     <option value={null}>...seleccione uno</option>
                 }

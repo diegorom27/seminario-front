@@ -2,9 +2,11 @@
     box-sizing: border-box;
     border-width: 0;
     border-color: #eeeeee;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
 }
 .container{
+    margin-top: 5rem;
     position: relative;
     top: 5.2rem;
 }
@@ -14,11 +16,14 @@
     box-shadow: 5px;
     margin-left:auto;
     margin-right: auto;
-    width: 22rem;
+    width: 25rem;
+    padding-bottom: 0.9rem;
 }
 .inputs{
-    margin: 24px;
-    margin-top: 1px;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    margin-top: 0.0625rem;
+    margin-bottom: 1rem;
     gap: 1rem;
 }
 .inputs input[type='text'],
@@ -28,7 +33,7 @@
     font-stretch:100%;
     font-weight: 400;
     tab-size: 4;
-    height: 44px;
+    height: 2.75rem;
     border-radius: 6px;
     padding: 0.7rem;
     width: 100%;
@@ -41,7 +46,7 @@
   display:inline-block;
 }
 .inputs span {
-  padding:10px;
+  padding:0.625rem;
   pointer-events: none;
   position:absolute;
   left:0;
@@ -76,7 +81,7 @@
     position: relative;
     display: inline-block;
     margin-left: 0.8rem;
-    margin-bottom: -30px;
+    margin-bottom: -1.88rem;
     top: -1.5rem;
     font-weight: 700;
     color: var(--warning-color);
@@ -85,17 +90,17 @@
     width: fit-content;
 }
 .buttons{
-    padding: 24px;
-    padding-top: 5px;
+    padding: 1.5rem;
+    padding-top: 0.313rem;
 }
 .buttons button{
     background-image: var(--second-color);
     color: rgb(255, 255, 255);
     border-radius: 6px;
-    padding: 12px 24px;
+    padding: 0.75rem 1.5rem;
     flex-grow: 1;
     font-family: var(--font-family);
-    font-size: 12px;
+    font-size: 0.75rem;
     font-style:normal;
     font-weight: bolder;
 }
@@ -103,12 +108,12 @@
     background-image: var(--second-color);
     color: var(--primary-color);
     border-radius: 6px;
-    font-size: 24px;
+    font-size: 1.5rem;
     text-align: center;
-    height: 112px;
+    height: 7rem;
     position: relative;
     justify-content: center;
-    margin: -24px 16px 0 16px;
+    margin: -1.5rem 1rem 0 1rem;
     top: -2rem;
 }
 .flexCol{

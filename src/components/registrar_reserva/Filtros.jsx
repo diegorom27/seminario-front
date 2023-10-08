@@ -1,7 +1,18 @@
 'use client'
+import { useEffect, useState } from 'react'
 import styles from './Filtros.module.css'
 
-const Filtros=({filtros})=>{
+const Filtros=({filtros,handleFiltrosValores})=>{
+
+    const [filtrosVal,setFiltrosVal]=useState({})
+
+    const handleChange=(e)=>{
+        setFiltrosVal({...filtrosVal,[e.target.name]:e.target.value})
+    }
+    useEffect(()=>{
+        handleFiltrosValores(filtrosVal)
+    },[filtrosVal])
+
     return(
         <table className={styles.table}>
             <thead>
@@ -18,10 +29,11 @@ const Filtros=({filtros})=>{
                                 {el.name}
                             </td>
                             <td>
-                                <select name={"filtrosAplicados"+i}
+                                <select name={el.name.trim()}
                                         id={"filtrosAplicados"+i} 
                                         className={styles.select}
-                                        onChange={(e)=>{/*handleChange(e)*/}}>
+                                        onChange={(e)=>{handleChange(e)}}
+                                        required>
                                     {
                                         <option value={null}>...seleccione uno</option>
                                     }

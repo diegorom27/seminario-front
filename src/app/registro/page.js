@@ -144,7 +144,7 @@ const FormularioRegistro=()=>{
                             value='on'
                             className={errors?.esGuapo?'warning':''}/>
                     </div>
-                    {errors?.esGuapo && <small name="esGuapo" className={styles.error}>{errors.esGuapo}</small>}
+                    {errors?.esGuapo && <small name="esGuapo" className={styles.errorGuapo+' '+styles.error}>{errors.esGuapo}</small>}
                 </div>
                 <div className={styles.buttons+' '+styles.flexCol}>
                     <button>SIGN UP</button>
