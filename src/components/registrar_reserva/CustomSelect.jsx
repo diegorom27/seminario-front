@@ -11,8 +11,7 @@ const CustomSelect=({styles,options,handleChange,text,disabled})=>{
                     id={"filtros"+k} 
                     className={styles.select}
                     onChange={(e)=>handleChange(e)}
-                    disabled={disabled}
-                    readonly>
+                    disabled={disabled}>
                 {
                     <option value={null}>...seleccione uno</option>
                 }

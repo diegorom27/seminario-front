@@ -16,17 +16,17 @@ const useForm=(initialForm,constraints,submit,callback)=>{
         setErrors(constraints(form))
     }
     const handleSubmit=(e)=>{
-    
         e.preventDefault()
         setErrors(constraints(form))
         if(Object.entries(errors).length!==0)return null
         submit(form)
             .then(res=>{
-                setMessage(res.message)
-                setSucess(res.success)
+                setMessage(res.message || 'Operación exitosa')
+                setSucess(res?.error?false:true)
+                return res
             })
-            .then(()=>{
-                callback()
+            .then((res)=>{
+                callback(res?.error?true:false,res)
             })
     }
     return{

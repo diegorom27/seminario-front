@@ -6,7 +6,7 @@
     height: 100vh;
 }
 .container{
-    margin-top: 5rem;
+    margin-top: 1.5rem;
     position: relative;
     top: 5.2rem;
 }
@@ -127,7 +127,7 @@
 }
 .err{
     background-color: var(--warning-color) !important;
-    color: var(--primary-color);
+    color: whitesmoke;
     border-radius: 5px;
 }
 .errorGuapo{

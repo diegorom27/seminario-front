@@ -10,11 +10,11 @@ const routes = [
     */
     {
       name: 'Reservar',
-      path: '/registrar_reserva',
+      path: '/estudiante/registrar_reserva',
       symbol: 'token'
     }, {
       name: 'Ver reservas',
-      path: '/ver_reserva',
+      path: '/estudiante/ver_reserva',
       symbol: 'token'
     }
   ]  
@@ -22,8 +22,8 @@ const routes = [
 export default function Layout ({ children }) {
     return (
         <>
-            <NavBar routes={routes}/>
-            {children}
+          <NavBar routes={routes}/>
+          {children}
         </>
     )
   }

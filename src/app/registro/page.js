@@ -5,18 +5,31 @@ import useForm from '../../components/CustomHooks/useForm'
 import server from '../../assets/server.js'
 import { useModal } from '../../components/CustomHooks/useModal'
 import ModalPortal from '../../components/global/Modal'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 
 const {protocol,domain,port} = server
 
 const initialForm={
     correo:'',
+    nombre:'',
     password:'',
     password2:'',
     esGuapo:false
 }
-const constraints=({correo,password,password2,esGuapo})=>{
+const constraints=({correo,password,password2,esGuapo,nombre})=>{
     let error={}
 
+    if(!/^[a-z0-9_\-\.]+@[a-z1-9_\-\.]+[^-_\.]\.[a-z]+$/gi.test(correo.trim())){
+        error['correo']='El correo suministrado no es valido.'
+    }else{
+        delete error['correo']
+    }
+    if(!/^[a-zñáéíóúü\s]{4,25}$/gi.test(nombre.trim())){
+        error['nombre']='Por favor dirijase a la registraduria.'
+    }else{
+        delete error['nombre']
+    }
     if(!/^[a-z0-9_\-\.]+@[a-z1-9_\-\.]+[^-_\.]\.[a-z]+$/gi.test(correo.trim())){
         error['correo']='El correo suministrado no es valido.'
     }else{
@@ -40,14 +53,15 @@ const constraints=({correo,password,password2,esGuapo})=>{
     return error
 }
 
-const submit=async({correo,password,esGuapo})=>{
+const submit=async({correo,password,esGuapo,nombre})=>{
     await new Promise(resolve=>setTimeout(resolve,1000))
     
-    return post(`${protocol}://${domain}:${port}/auth/registro`,{
+    return post(`${protocol}://${domain}:${port}/usuario/guardar/`,{
         body:{
-            'correo':correo,
-            'contrasena':password,
-            'esGuapo':esGuapo
+            'username':correo,
+            'password':password,
+            'esGuapo':esGuapo,
+            'nombres':nombre
         },
         isFormData:false,
         headers: {
@@ -59,12 +73,14 @@ const submit=async({correo,password,esGuapo})=>{
 
 const FormularioRegistro=()=>{
     
+    const router=useRouter()
+    
     const {
         isOpen,
         closeModal,
         openModal
     }=useModal(false)
-    
+
     const {
         form,
         errors,
@@ -73,7 +89,12 @@ const FormularioRegistro=()=>{
         handleSubmit,
         message,
         success
-    } = useForm(initialForm,constraints,submit,()=>{openModal()}) 
+    } = useForm(initialForm,constraints,submit,(success)=>{
+        openModal()
+        !success && setTimeout(()=>{
+            router.push('/')
+        },1500)
+    }) 
     
     const dispayAgain=(e)=>{
         if(errors?.[e.target.name]){
@@ -109,6 +130,18 @@ const FormularioRegistro=()=>{
                         <span>Correo</span>
                     </label>
                     {errors?.correo && <small name='correo' className={styles.error}>{errors.correo}</small>}
+                    <label>
+                        <input name="nombre" 
+                            placeholder="" 
+                            type='text'
+                            onChange={(e)=>handleChange(e)}
+                            onBlur={(e)=>{handleBlur(e)
+                                          dispayAgain(e)}}
+                            className={errors?.correo?'warning':''}
+                            onFocus={(e)=>handleFocus(e)}/>
+                        <span>Nombre</span>
+                    </label>
+                    {errors?.nombre && <small name='nombre' className={styles.error}>{errors.nombre}</small>}
                     <label>
                         <input name="password" 
                             placeholder="" 

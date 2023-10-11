@@ -10,9 +10,7 @@ const {protocol,domain,port} = server
 
 const initialForm={
     correo:'',
-    password:'',
-    password2:'',
-    esGuapo:false
+    password:''
 }
 const constraints=({correo,password})=>{
     let error={}
@@ -22,7 +20,7 @@ const constraints=({correo,password})=>{
     }else{
         delete error['correo']
     }
-    if(!/^[0-9a-zñáéíóúü_\s]{1,12}$/i.test(password.trim())){
+    if(!/^[0-9a-zñáéíóúü_\is]{1,12}$/i.test(password.trim())){
         error['password']='La contraseña no cumple los estandares.'
     }else{
         delete error['password']
@@ -30,14 +28,13 @@ const constraints=({correo,password})=>{
     return error
 }
 
-const submit=async({correo,password,esGuapo})=>{
+const submit=async({correo,password})=>{
     await new Promise(resolve=>setTimeout(resolve,1000))
     
-    return post(`${protocol}://${domain}:${port}/auth/registro`,{
+    return post(`${protocol}://${domain}:${port}/token/generar/`,{
         body:{
-            'correo':correo,
-            'contrasena':password,
-            'esGuapo':esGuapo
+            'username':correo,
+            'contrasena':password
         },
         isFormData:false,
         headers: {
@@ -48,6 +45,9 @@ const submit=async({correo,password,esGuapo})=>{
 } 
 
 export default function Home() {
+
+
+  const router = useRouter()
 
   const {
     isOpen,
@@ -63,7 +63,19 @@ export default function Home() {
     handleSubmit,
     message,
     success
-  } = useForm(initialForm,constraints,submit,()=>{openModal()}) 
+  } = useForm(initialForm,constraints,submit,(success,res)=>{
+    openModal()
+    !success && setTimeout(()=>{
+      let date = new Date();
+      date.setDate(date.getDate() + 7);
+      document.cookie = `token=${res.token}; expires=${date}`;
+      document.cookie = `password=${form.password}; expires=${date}`;
+      document.cookie = `user=${form.correo}; expires=${date}`
+      
+      router.push('/estudiante/registrar_reserva')
+
+    },1500)
+  }) 
 
   const dispayAgain=(e)=>{
     if(errors?.[e.target.name]){
@@ -80,12 +92,11 @@ export default function Home() {
     }
   }
 
-  const router = useRouter()
-
   return (
     <main className={styles.container}>
         <form className={styles.form+' '+styles.boxShadow}
-            onSubmit={(e)=>handleSubmit(e)}>
+              onSubmit={(e)=>handleSubmit(e)}
+              method='POST'>
           <div className={styles.title+' '+styles.flexCol+' '+styles.boxShadow}>
               <h4>Hello - Log In</h4>
           </div> 
@@ -116,14 +127,14 @@ export default function Home() {
               {errors?.password && <small name='password' className={styles.error}>{errors.password}</small>}
           </div>
           <div className={styles.buttons+' '+styles.flexCol}>
-              <button>LOG IN</button>
+              <button  type='submit'>LOG IN</button>
           </div>
           <div className={styles.signUpLink}>
             <label><small>Don't have an account?<b onClick={()=>router.push('/registro')}>Sign up</b></small></label>
           </div>
       </form>
       <ModalPortal isOpen={isOpen} closeModal={closeModal}>
-          <h3>{success?'Registro exitoso':'ERROR'}</h3>
+          <h3>{success?'Acceso exitoso':'ERROR'}</h3>
           <p className={(success==true)?'success':styles.err}>{message}</p>
       </ModalPortal>
     </main>
