@@ -1,5 +1,5 @@
 'use client'
-import { post } from '../helpers/helperHttp'
+import { post,get } from '../helpers/helperHttp'
 import styles from './page.module.css'
 import useForm from '../components/CustomHooks/useForm'
 import server from '../assets/server.js'
@@ -26,6 +26,20 @@ const constraints=({correo,password})=>{
         delete error['password']
     }
     return error
+}
+const redirect=async(token,router)=>{
+  const url = `${protocol}://${domain}:${port}`
+  const res = await get(`${url}/token/actual-usuario/`,{
+    headers: {
+    'Content-Type': "application/json;charset=utf-8",
+    'Authorization':"Bearer "+token
+    }
+  })
+  //falta logica para acceso a los demas tipos de usuario
+  const rol = await res?.rol?.nombreRol || null
+  if(rol=='NORMAL'){
+    router.push('/estudiante/inicio')
+  }
 }
 
 const submit=async({correo,password})=>{
@@ -67,12 +81,20 @@ export default function Home() {
     openModal()
     !success && setTimeout(()=>{
       let date = new Date();
+
+      //delete cookies
       date.setDate(date.getDate() + 7);
-      document.cookie = `token=${res.token}; expires=${date}`;
-      document.cookie = `password=${form.password}; expires=${date}`;
-      document.cookie = `user=${form.correo}; expires=${date}`
+      document.cookie = `token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+      document.cookie = `password=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+      document.cookie = `user=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`
+
+      //new cookies
+      date.setDate(date.getDate() + 7);
+      document.cookie = `token=${res.token}; expires=${date} path=/`;
+      document.cookie = `password=${form.password}; expires=${date} path=/`;
+      document.cookie = `user=${form.correo}; expires=${date} path=/`
       
-      router.push('/estudiante/registrar_reserva')
+      redirect(res.token,router)
 
     },1500)
   }) 

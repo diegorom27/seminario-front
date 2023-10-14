@@ -76,7 +76,12 @@
     background: var(--primary-color);
     padding: 0; 
 }
-
+.inputs input[name='correo']{
+    text-transform: lowercase;
+}
+.inputs input[name='nombre']{
+    text-transform:capitalize;
+}
 .error{
     position: relative;
     display: inline-block;

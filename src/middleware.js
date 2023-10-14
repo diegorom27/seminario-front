@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server'
 import server from './assets/server' 
 import { get } from './helpers/helperHttp'
-// This function can be marked `async` if using `await` inside
 export async function middleware(request) {
     let {protocol,domain,port}= server
     let token = request.cookies.get('token')
@@ -12,6 +11,7 @@ export async function middleware(request) {
       'Authorization':"Bearer "+token?.value
       }
     })
+    //falta logica para acceso a los demas tipos de usuario
     const rol = await res?.rol?.nombreRol || null
     if(rol!=='NORMAL'){
       return NextResponse.redirect(new URL('/', request.url))  
@@ -20,5 +20,5 @@ export async function middleware(request) {
 }
  
 export const config = {
-  matcher: ['/prueba','/estudiante/registrar_reserva']
+  matcher: ['/estudiante/inicio','/estudiante/registrar_reserva']
 }

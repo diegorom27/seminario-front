@@ -1,13 +1,11 @@
 import NavBar from '../../components/global/NavBar.jsx'
 
 const routes = [
-    /*
     {
-      name: 'Log in',
-      path: '/',
+      name: 'Inicio',
+      path: '/estudiante/inicio',
       symbol: 'Home'
     },
-    */
     {
       name: 'Reservar',
       path: '/estudiante/registrar_reserva',
@@ -16,7 +14,11 @@ const routes = [
       name: 'Ver reservas',
       path: '/estudiante/ver_reserva',
       symbol: 'token'
-    }
+    },{
+      name: 'Log out',
+      path: '/',
+      symbol: 'Logout'
+    },
   ]  
 
 export default function Layout ({ children }) {
