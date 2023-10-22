@@ -1,0 +1,10 @@
+.err{
+    background-color: rgb(220, 53, 69) !important;
+    color: var(--primary-color);
+    border-radius: 5px;
+}
+.paragraph{
+    text-wrap: wrap;
+    text-align: justify;
+    white-space:pre;
+}

@@ -17,7 +17,7 @@ const CustomSelect=({styles,options,handleChange,text,disabled})=>{
                 }
                 {
                     options.map((el,i)=><option key={'opt'+k+i} 
-                                            value={el}>{el}</option>)
+                                            value={el.id}>{el.nombre}</option>)
                 }
             </select>
         </div>

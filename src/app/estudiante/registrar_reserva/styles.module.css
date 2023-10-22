@@ -165,3 +165,6 @@
     top: 1.1rem;
     z-index: 2;
 }
+.errInput{
+    border-color: var(--warning-color);
+}

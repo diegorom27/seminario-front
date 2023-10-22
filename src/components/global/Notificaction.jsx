@@ -15,10 +15,14 @@ const Notification = ({ message, sucess, open }) => {
   }, [open])
 
   return (
-        <ModalPortal isOpen={isOpen} closeModal={closeModal}>
-            <h3>{sucess ? 'Transacción exitosa' : 'ERROR'}</h3>
-            <p className={(sucess === true) ? 'sucess' : 'err'}>{message}</p>
-        </ModalPortal>
+    <>
+      {
+      open && <ModalPortal isOpen={isOpen} closeModal={closeModal}>
+                <h3>{sucess ? 'Transacción exitosa' : 'ERROR'}</h3>
+                <p className={((sucess === true) ? 'sucess' : 'err') + ' ' +'paragraph'}>{message}</p>
+              </ModalPortal>
+      }
+    </>
   )
 }
 export default Notification

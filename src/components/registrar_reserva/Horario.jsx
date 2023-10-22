@@ -1,6 +1,8 @@
 const { useState, useEffect } = require("react")
 
-const Horario=({styles,handleChange,cronograma,i})=>{
+/*agregar error*/
+
+const Horario=({styles,handleChange,verifyDisponibilidad,i,errorCronograma})=>{
     const [horario,setHorario]=useState({})
     const [dia,setDia]=useState(null)
     const handleHorario=(e)=>{
@@ -13,13 +15,16 @@ const Horario=({styles,handleChange,cronograma,i})=>{
             e.target.value=e.target.value.split(':')[0].concat(':00')
             handleHorario(e)
         }
+        if(dia!=null && horario?.horaInicio && horario?.horaFin){
+            console.log(dia,horario.horaInicio,horario.horaFin)
+            verifyDisponibilidad(dia,horario.horaInicio,horario.horaFin,i)
+        }
     }
 
     useEffect(()=>{
-        if(dia==null)return
-        handleChange(cronograma,dia,horario)
+        if(dia==null || horario?.horaInicio==undefined || horario?.horaFin==undefined)return
+        handleChange(dia,horario)
     },[horario])
-
     return(
         <div className={styles.flexRow}>
             <label>
@@ -27,6 +32,8 @@ const Horario=({styles,handleChange,cronograma,i})=>{
                         placeholder=''
                         name='fecha'
                         onChange={(e)=>handleHorario(e)}
+                        onBlur={(e)=>handleOnBlur(e)}
+                        className={Object.hasOwn(errorCronograma,i+'D')?'warning':''}
                         required/>
                 <span >F.  inicio convocatoria</span>
             </label> 

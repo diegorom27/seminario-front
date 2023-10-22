@@ -1,142 +1,157 @@
-'use client'
-import { useEffect, useState } from 'react'
-import {post,get} from '../../../helpers/helperHttp'
-import styles from './styles.module.css'
-import server from '@/assets/server'
-import CustomSelect from '@/components/registrar_reserva/CustomSelect'
-import Horario from '@/components/registrar_reserva/Horario'
-import Filtros from '@/components/registrar_reserva/Filtros'
+"use client";
+import { useEffect, useState } from "react";
+import { post, get } from "../../../helpers/helperHttp";
+import { getCookie } from "../../../helpers/clientCookies.js";
+import styles from "./styles.module.css";
+import server from "@/assets/server";
+import SelectManager from "@/components/registrar_reserva/SelectManager";
+import Filtros from "@/components/registrar_reserva/Filtros";
+import Notification from "@/components/global/Notificaction";
+import HorarioManager from "@/components/registrar_reserva/HorarioManager";
 
-const {protocol,domain,port} = server
+const { protocol, domain, port } = server;
+const url = `${protocol}://${domain}:${port}`;
 
-const tiposProvisional = ['salon','cancha','auditorio']
-
-const filtrosProvisionales = ['aforo', 'proyector','televisores','sillas']
-
-const RegistrarReserva=()=>{
-    /* select filtros*/
-    const [selectedTipoOption,setSelectedTipoOption]=useState(null)
-    const [tiposOptions,setTiposOptions]= useState([])
-    const [selectedFiltroOption,setSelectedFiltroOption]=useState(null)
-    const [filtrosOptions,setFiltrosOptions]=useState([])
-
-    const [disabled,setDisabled]=useState(false)
-
-    useEffect(()=>{
-        /*fetch tipos*/
-        setTiposOptions(tiposProvisional)
-    },[])
-    useEffect(()=>{
-        if(selectedTipoOption==null)return
-        /*fetch opciones de Filtros*/
-        setDisabled(true)
-        setFiltrosOptions(filtrosProvisionales)
-    },[selectedTipoOption])
-
-    const handleChangeTipo=(e)=>{
-        setSelectedTipoOption(e.target.value)
-    }
-
-    const handleChangeFiltroDeseado=(e)=>{
-        setSelectedFiltroOption(e.target.value)
-    }
+const RegistrarReserva = () => {
 
 
-    /*dates*/
-    const [cronograma,setCronograma]=useState({})
-    const [horarios,setHorarios]=useState([])
-
-    const handleCronograma=(cronograma,dia,horario)=>{
-        setCronograma({...cronograma,[dia]:horario})
-    }
-    const handleHorarios=(e)=>{
-        e.preventDefault()
-        setHorarios([...horarios,<Horario handleChange={handleCronograma} 
-                                          cronograma={cronograma}
-                                          styles={styles} 
-                                          i={horarios.length+1}/>])
-    }
+    
+    const [selectedTipoOption, setSelectedTipoOption] = useState(null);
 
     /*filtros*/
+	const [filtros, setFiltros] = useState({});
+	const [filtrosVal, setFiltrosVal] = useState({});
 
-    const [filtros,setFiltros] = useState([])
+    const [disponibilidad,setDisponibilidad]=useState(null)
 
-    const [filtrosVal,setFiltrosVal]=useState({})
-
-    const handleFiltros=(e)=>{
-        e.preventDefault()
-        if(selectedFiltroOption==null)return 
-
-        /*fetch valores filtro*/
-
-        setFiltros([...filtros,{name:selectedFiltroOption,
-                                values:['hola','ohla','aloh','halo']}])
-    }
+    const handleFiltrosValores = (e) => {
+		setFiltrosVal({...filtrosVal,[e.target.name]:e.target.value})
+	};
     
-    const handleFiltrosValores=(vals)=>{
-        setFiltrosVal(vals)
+    const handleDisponibilidad=(selectedTipoOption)=>{
+        if (selectedTipoOption == null) return;
+        let token = getCookie(document, "token");
+        get(url + "/diponibilidad/listarSegunIdTipo/" + selectedTipoOption, {
+			headers: {
+				"Content-Type": "application/json;charset=utf-8",
+				Authorization: "Bearer " + token,
+			},
+		})
+        .then((res) =>
+				res.map((el) => ({
+				    dia: el.diaDisponibilidad,
+					incio: el.horaInicio,
+                    fin: el.horaFin
+				}))
+		)
+        .then((disp) => {
+            setDisponibilidad(disp)
+		});
+
     }
 
 
-    const handleSubmit=(e)=>{
-        e.preventDefault()
-        console.log({
-            selectedTipoOption,
-            cronograma,
-            filtrosVal
+	/*dates*/
+
+    const [cronograma, setCronograma] = useState([]);
+
+    const [openNotificacion,setOpenNotificacion]=useState(false)
+    const [notificacionMessage,setNotificacionMessage]=useState('false')
+    const [notificacionError,setNotificacionError]=useState('false')
+    const [errorCronograma,setErrorCronograma]=useState({})
+
+    const handleCronograma = (dia, horario) => {
+		setCronograma({ ...cronograma, [dia]: horario });
+	};
+    const handleErrorCronograma=(error,flag)=>{
+        console.log(error,flag)
+        if(flag!=='del'){  
+            setErrorCronograma({...errorCronograma,[error]:error})  
+        }else{
+            setErrorCronograma((prev)=>{
+                let errors=JSON.parse(JSON.stringify(prev))
+                delete errors[error]
+                return errors
+            })
+        }    
+    }
+    useEffect(()=>{
+        console.log(errorCronograma)
+    },[errorCronograma])
+
+    /*notificaciones*/
+    const showNotificationMessage=(isError,message)=>{
+        setNotificacionError(isError)
+        setOpenNotificacion(Math.random())
+        setNotificacionMessage(message)            
+    }
+	
+	const handleSubmit = (e) => {
+		e.preventDefault();
+        if(Object.keys(errorCronograma).length>0){
+            showNotificationMessage(false,'Por favor revise las fechas')
+            return
+        }
+        if(cronograma.length==0){
+            showNotificationMessage(false,'Es necesario agregar fechas para reservar')
+            return
+        }
+        let caracteristicas= Object.keys(filtrosVal).map((el)=>{
+            return {
+                'idCaracteristica':el,
+                'valorCaracteristica':filtrosVal[el]
+            }
         })
-    }
+		console.log(JSON.stringify({
+            'tipo':selectedTipoOption,
+			'cronograma':Object.values(cronograma),
+			'cumple':caracteristicas,
+		}));
+	};
 
-
-
-    return(
-        <div className={styles.container}>
-            <h2 className={styles.title}>Realizar reserva</h2>
-            <div className={styles.form +' '+ styles.boxShadow }>
-                {/*Add filter y Tipo de recurso*/}
-                <section className={styles.inputs+' '+styles.flexCol}>
-                    <div className={styles.flexRow}>
-                        <CustomSelect styles={styles}
-                                      options={tiposOptions}
-                                      handleChange={handleChangeTipo}
-                                      text={'Tipos'}
-                                      disabled={disabled}/>
-                        <CustomSelect styles={styles}
-                                      options={filtrosOptions}
-                                      handleChange={handleChangeFiltroDeseado}
-                                      text={'Filtros deseados'}
-                                      disabled={false}/>
-                    </div>
-                    <button type='button' 
-                            onClick={(e)=>handleFiltros(e)}
-                            className={styles.button}>Add filter</button>
-                    <form style={{
-                        display:'flex',
-                        flexDirection:'column',
-                        gap:'0.8rem'
-                    }}>
-                        {/*Fechas*/}
-                        <Horario handleChange={handleCronograma} 
-                                cronograma={cronograma}
-                                styles={styles} 
-                                i={0}/>
-                        {horarios}
-                        <button type='button' 
-                                onClick={(e)=>handleHorarios(e)} 
-                                className={styles.button}>Add date</button>   
-                        <section className={styles.section}>
-                            {
-                                <Filtros filtros={filtros} 
-                                          handleFiltrosValores={handleFiltrosValores}/>
-                            }
-                        </section>
-                        <button type='submit' 
-                                onClick={(e)=>handleSubmit(e)}
-                                className={styles.button}>Bucar Recursos</button>
-                    </form>
-                </section>
-            </div> 
-        </div>
-    )
-}
-export default RegistrarReserva
+	return (
+        <>
+            <div className={styles.container}>
+                <h2 className={styles.title}>Realizar reserva</h2>
+                <div className={styles.form + " " + styles.boxShadow}>
+                    {/*Add filter y Tipo de recurso*/}
+                    <section className={styles.inputs + " " + styles.flexCol}>
+                        <SelectManager styles={styles} 
+                                       filtros={filtros}
+                                       setFiltros={setFiltros}
+                                       handleDisponibilidad={handleDisponibilidad}
+                                       selectedTipoOption={selectedTipoOption}
+                                       setSelectedTipoOption={setSelectedTipoOption}/>
+                        <form style={{ display: "flex",
+                                        flexDirection: "column",
+                                        gap: "0.8rem",
+                                    }}>
+                            {/*Fechas*/}
+                            <HorarioManager styles={styles}
+                                            disponibilidad={disponibilidad}
+                                            handleCronograma={handleCronograma}
+                                            cronograma={cronograma}
+                                            handleErrorCronograma={handleErrorCronograma}
+                                            showNotificationMessage={showNotificationMessage}
+                                            errorCronograma={errorCronograma}/>
+                            <Filtros filtros={filtros}
+                                     handleFiltrosValores={handleFiltrosValores}/>
+                            <button type="submit"
+                                    onClick={(e) => handleSubmit(e)}
+                                    className={styles.button}>
+                                Bucar Recursos
+                            </button>
+                        </form>
+                    </section>
+                </div>
+            </div>
+            {/* Error Horario */}
+            {
+            <Notification message={notificacionMessage} 
+                          sucess={notificacionError} 
+                          open={openNotificacion}/>
+            }
+        </>
+	);
+};
+export default RegistrarReserva;

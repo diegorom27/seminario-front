@@ -1,5 +1,6 @@
 'use client'
 import { post,get } from '../helpers/helperHttp'
+import {setCookie,deleteCookie} from '@/helpers/clientCookies'
 import styles from './page.module.css'
 import useForm from '../components/CustomHooks/useForm'
 import server from '../assets/server.js'
@@ -43,7 +44,7 @@ const redirect=async(token,router)=>{
 }
 
 const submit=async({correo,password})=>{
-    await new Promise(resolve=>setTimeout(resolve,1000))
+    await new Promise(resolve=>setTimeout(resolve,500))
     
     return post(`${protocol}://${domain}:${port}/token/generar/`,{
         body:{
@@ -81,22 +82,22 @@ export default function Home() {
     openModal()
     !success && setTimeout(()=>{
       let date = new Date();
+      
+      date.setDate(date.getDate() + 7);
 
       //delete cookies
-      date.setDate(date.getDate() + 7);
-      document.cookie = `token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
-      document.cookie = `password=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
-      document.cookie = `user=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`
-
+      deleteCookie(document,'token')
+      deleteCookie(document,'password')
+      deleteCookie(document,'user')
+      
       //new cookies
-      date.setDate(date.getDate() + 7);
-      document.cookie = `token=${res.token}; expires=${date} path=/`;
-      document.cookie = `password=${form.password}; expires=${date} path=/`;
-      document.cookie = `user=${form.correo}; expires=${date} path=/`
+      setCookie(document,'token', res.token, {expires: date, 'max-age': 3600});
+      setCookie(document,'password', form.password, {expires: date, 'max-age': 3600});
+      setCookie(document,'user', form.correo, {expires: date, 'max-age': 3600});
       
       redirect(res.token,router)
 
-    },1500)
+    },1000)
   }) 
 
   const dispayAgain=(e)=>{
