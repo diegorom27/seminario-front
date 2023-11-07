@@ -99,6 +99,7 @@ const ReservarRecurso=()=>{
             }
         },
     ])
+    /*
     useEffect(()=>{
         let body = getCookie(document,'bodyFiltrar')
         let token = getCookie(document,'token')
@@ -115,7 +116,7 @@ const ReservarRecurso=()=>{
             //setRecursos(res)
         })
     },[recursos])
-
+    */
     return(
         <div className={styles.cardsContainer+" "+styles.dinamycGrid}>
             {
@@ -123,7 +124,7 @@ const ReservarRecurso=()=>{
                     <Card key={'cardRecurso'+i}
                           front={
                             <div className={styles.cardInfo}>
-                                <Image src="https://www.udistrital.edu.co/themes/custom/versh/logo.png"
+                                <Image src="https://laud.udistrital.edu.co/sites/default/files/imagen-noticia/2022-09/LAUD%20Maestr%C3%ADa%20en%20Investigaci%C3%B3n%20Social_0.png"
                                        width={500}
                                        height={800}
                                        className={styles.cardImage}
@@ -137,7 +138,7 @@ const ReservarRecurso=()=>{
                           }
                           back={
                             <div className={styles.buttonSide}>
-                                <button className={styles.buttonReserva}>Reservar</button> 
+                                <button className={styles.buttonReserva+' '+'anim-btn'}>Reservar</button> 
                             </div>
                           }
                     

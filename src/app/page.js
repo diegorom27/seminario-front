@@ -152,7 +152,7 @@ export default function Home() {
               {errors?.password && <small name='password' className={styles.error}>{errors.password}</small>}
           </div>
           <div className={styles.buttons+' '+styles.flexCol}>
-              <button  type='submit'>LOG IN</button>
+              <button className='anim-btn'  type='submit'>LOG IN</button>
           </div>
           <div className={styles.signUpLink}>
             <label><small>Don't have an account?<b onClick={()=>router.push('/registro')}>Sign up</b></small></label>

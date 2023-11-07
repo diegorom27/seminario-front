@@ -180,7 +180,7 @@ const FormularioRegistro=()=>{
                     {errors?.esGuapo && <small name="esGuapo" className={styles.errorGuapo+' '+styles.error}>{errors.esGuapo}</small>}
                 </div>
                 <div className={styles.buttons+' '+styles.flexCol}>
-                    <button>SIGN UP</button>
+                    <button className='anim-btn'>SIGN UP</button>
                 </div>
             </form>
             <ModalPortal isOpen={isOpen} closeModal={closeModal}>

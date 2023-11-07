@@ -38,3 +38,26 @@ body {
     rgb(var(--background-start-rgb));
     height: 100vh;
 }
+/*animated buttons*/
+.anim-btn{
+  position: relative;
+}
+.anim-btn::after{
+  content: "";
+  background-color: var(--primary-color);
+  position: absolute;
+  width: 0;
+  height: 0.2rem;
+  bottom: 0.2rem;
+  left: 50%;
+  transition: width 0.5s ease,
+              left 0.5s ease;
+  border-radius: 8px;
+}
+.anim-btn:hover::after{
+  width: calc(100% - 4%);
+  left: 2%;
+}
+
+
+

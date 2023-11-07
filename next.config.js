@@ -4,9 +4,9 @@ const nextConfig = {
         remotePatterns: [
           {
             protocol: 'https',
-            hostname: 'www.udistrital.edu.co',
+            hostname: 'laud.udistrital.edu.co',
             port: '',
-            pathname: '/themes/custom/versh/logo.png',
+            pathname: '/sites/default/files/imagen-noticia/2022-09/LAUD%20Maestr%C3%ADa%20en%20Investigaci%C3%B3n%20Social_0.png',
           },
         ],
       },

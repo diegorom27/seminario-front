@@ -138,7 +138,7 @@ const RegistrarReserva = () => {
                                      handleFiltrosValores={handleFiltrosValores}/>
                             <button type="submit"
                                     onClick={(e) => handleSubmit(e)}
-                                    className={styles.button}>
+                                    className={styles.button+' '+'anim-btn'}>
                                 Bucar Recursos
                             </button>
                         </form>
