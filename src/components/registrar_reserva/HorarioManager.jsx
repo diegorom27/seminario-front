@@ -11,14 +11,15 @@ const HorarioManager=({styles,disponibilidad,handleCronograma,handleErrorCronogr
     useEffect(()=>{
         if(disponibilidad==null)return
         setDiasDisponibles(disponibilidad.reduce((acumulador, elemento, indice) => {
-            return acumulador + `Día: ${elemento.dia}, Inicio: ${elemento.incio}, Fin: ${elemento.fin}${indice < disponibilidad.length - 1 ? '\n' : ''} `;
+            return acumulador + `${elemento.dia}, de ${elemento.incio} a ${elemento.fin}${indice < disponibilidad.length - 1 ? '\n' : ''} `;
         }, ''));
     },[disponibilidad])
     
     const verifyDisponibilidad=(dia,ini,fin,i)=>{
 
         let diaString=diasDeLaSemana[new Date(dia).getUTCDay()]
- 
+        ini=ini+':00'
+        fin=fin+':00'
         if(!disponibilidad.some((el=>el.dia==diaString && 
                                     el.incio<=ini &&
                                     el.fin>=fin))){

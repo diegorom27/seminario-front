@@ -1,13 +1,15 @@
 'use client'
-import { post,get } from '../helpers/helperHttp'
-import {setCookie,deleteCookie} from '@/helpers/clientCookies'
+import { post,get } from '@/helpers/helperHttp'
+import {setCookie,deleteCookie,getCookie} from '@/helpers/clientCookies'
 import styles from './page.module.css'
-import useForm from '../components/CustomHooks/useForm'
-import server from '../assets/server.js'
-import { useModal } from '../components/CustomHooks/useModal'
-import ModalPortal from '../components/global/Modal'
+import useForm from '@/components/CustomHooks/useForm'
+import server from '@/assets/server.js'
+import { useModal } from '@/components/CustomHooks/useModal'
+import ModalPortal from '@/components/global/Modal'
 import { useRouter } from 'next/navigation'
 const {protocol,domain,port} = server
+
+const url = `${protocol}://${domain}:${port}`
 
 const initialForm={
     correo:'',
@@ -28,8 +30,8 @@ const constraints=({correo,password})=>{
     }
     return error
 }
-const redirect=async(token,router)=>{
-  const url = `${protocol}://${domain}:${port}`
+const redirect=async(router)=>{
+  let token = getCookie(document,'token')
   const res = await get(`${url}/token/actual-usuario/`,{
     headers: {
     'Content-Type': "application/json;charset=utf-8",
@@ -82,7 +84,7 @@ export default function Home() {
     openModal()
     !success && setTimeout(()=>{
       let date = new Date();
-      
+
       date.setDate(date.getDate() + 7);
 
       //delete cookies
@@ -95,9 +97,9 @@ export default function Home() {
       setCookie(document,'password', form.password, {expires: date, 'max-age': 3600});
       setCookie(document,'user', form.correo, {expires: date, 'max-age': 3600});
       
-      redirect(res.token,router)
+      redirect(router)
 
-    },1000)
+    },500)
   }) 
 
   const dispayAgain=(e)=>{

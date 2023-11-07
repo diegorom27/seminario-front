@@ -1,21 +1,20 @@
 "use client";
-import { useEffect, useState } from "react";
-import { post, get } from "../../../helpers/helperHttp";
-import { getCookie } from "../../../helpers/clientCookies.js";
+import {useState } from "react";
+import {get } from "../../../../helpers/helperHttp";
+import { getCookie, setCookie } from "../../../../helpers/clientCookies.js";
 import styles from "./styles.module.css";
 import server from "@/assets/server";
 import SelectManager from "@/components/registrar_reserva/SelectManager";
 import Filtros from "@/components/registrar_reserva/Filtros";
 import Notification from "@/components/global/Notificaction";
 import HorarioManager from "@/components/registrar_reserva/HorarioManager";
+import {useRouter} from "next/navigation";
 
 const { protocol, domain, port } = server;
 const url = `${protocol}://${domain}:${port}`;
 
 const RegistrarReserva = () => {
 
-
-    
     const [selectedTipoOption, setSelectedTipoOption] = useState(null);
 
     /*filtros*/
@@ -64,7 +63,7 @@ const RegistrarReserva = () => {
 		setCronograma({ ...cronograma, [dia]: horario });
 	};
     const handleErrorCronograma=(error,flag)=>{
-        console.log(error,flag)
+
         if(flag!=='del'){  
             setErrorCronograma({...errorCronograma,[error]:error})  
         }else{
@@ -75,16 +74,15 @@ const RegistrarReserva = () => {
             })
         }    
     }
-    useEffect(()=>{
-        console.log(errorCronograma)
-    },[errorCronograma])
-
     /*notificaciones*/
     const showNotificationMessage=(isError,message)=>{
         setNotificacionError(isError)
         setOpenNotificacion(Math.random())
         setNotificacionMessage(message)            
     }
+    
+    /* envio (paso a la siguiente vista de realizar reserva) */    
+    const router = useRouter()
 	
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -102,11 +100,13 @@ const RegistrarReserva = () => {
                 'valorCaracteristica':filtrosVal[el]
             }
         })
-		console.log(JSON.stringify({
+        setCookie(document,'bodyFiltrar',JSON.stringify({
             'tipo':selectedTipoOption,
-			'cronograma':Object.values(cronograma),
-			'cumple':caracteristicas,
-		}));
+            'cronograma':Object.values(cronograma),
+            'cumple':caracteristicas
+        }),{'max-age': 3600})
+
+        router.push('/estudiante/reservar_recurso')
 	};
 
 	return (

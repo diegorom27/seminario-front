@@ -75,17 +75,20 @@ const SelectManager=({styles,filtros,setFiltros,handleDisponibilidad,selectedTip
 		if (selectedFiltroOption == null) return;
 
 		let token = getCookie(document, "token");
-		get(url + "/cumple/listarSegunIdCaracteristica/" + selectedFiltroOption, {
+		get(url + "/cumple/listarSegunIdCaracteristica/" + selectedFiltroOption + '/' + selectedTipoOption, {
 			headers: {
 				"Content-Type": "application/json;charset=utf-8",
 				Authorization: "Bearer " + token,
 			},
 		})
+        .then((res)=>({
+            ...res,['cumples']:Array.from(new Set(res.cumples.map((el)=>el.valorCaracteristica)))
+        }))
         .then((res) => ({
             name: res.nombreCaracteristica,
             values: res.cumples.map((el) => ({
-                id: el.valorCaracteristica,
-                nombre: el.valorCaracteristica,
+                id: el,
+                nombre: el,
             })),
         }))
         .then((filter) => {

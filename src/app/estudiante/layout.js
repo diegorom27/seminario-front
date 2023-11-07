@@ -8,7 +8,7 @@ const routes = [
     },
     {
       name: 'Reservar',
-      path: '/estudiante/registrar_reserva',
+      path: '/estudiante/buscar_recurso',
       symbol: 'token'
     }, {
       name: 'Ver reservas',
@@ -29,4 +29,3 @@ export default function Layout ({ children }) {
         </>
     )
   }
-  

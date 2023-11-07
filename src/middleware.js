@@ -13,12 +13,12 @@ export async function middleware(request) {
     })
     //falta logica para acceso a los demas tipos de usuario
     const rol = await res?.rol?.nombreRol || null
-    if(rol!=='NORMAL'){
+    if(rol.trim().toUpperCase()!=='NORMAL'){
       return NextResponse.redirect(new URL('/', request.url))  
     }
     return NextResponse.next();
 }
  
 export const config = {
-  matcher: ['/estudiante/inicio','/estudiante/registrar_reserva']
+  matcher: ['/estudiante/inicio','/estudiante/buscar_recurso']
 }
