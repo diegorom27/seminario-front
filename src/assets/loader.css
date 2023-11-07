@@ -1,0 +1,21 @@
+.loader{
+    width: 4.7rem;
+    height: 4.7rem;
+    margin-left: auto;
+    margin-right: auto;
+
+    border-radius: 50%;
+    background-image: radial-gradient(circle 8vw, rgb(255,255,255) 80%, rgba(0,0,0,0) 2.5vw),
+                      conic-gradient(rgb(0,0,0,0.1) 0% 15% , rgb(32, 35, 36) 40% 60%,rgb(0,0,0,0.1) 80% 100%);
+
+    animation: rotation 0.6s ease-out infinite  both;
+    z-index: 100;
+}
+@keyframes rotation {
+    from{
+        transform: rotate(0deg);
+    }
+    to{
+        transform: rotate(360deg);
+    }
+}

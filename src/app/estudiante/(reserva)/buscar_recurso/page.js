@@ -9,6 +9,7 @@ import Filtros from "@/components/registrar_reserva/Filtros";
 import Notification from "@/components/global/Notificaction";
 import HorarioManager from "@/components/registrar_reserva/HorarioManager";
 import {useRouter} from "next/navigation";
+import Loader from "@/components/global/Loader";
 
 const { protocol, domain, port } = server;
 const url = `${protocol}://${domain}:${port}`;

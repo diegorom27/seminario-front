@@ -10,7 +10,9 @@ ${user.value.split('@')[0]}`
     const text=`Listo para reservar guap@?
 ╰(*°▽°*)╯`
     return(
-        <HeroImage title={title} image={img} text={text}/>
-    )
+        <>
+            <HeroImage title={title} image={img} text={text}/>
+        </>
+        )
 }
 export default Inicio
