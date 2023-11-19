@@ -9,7 +9,6 @@ import Filtros from "@/components/registrar_reserva/Filtros";
 import Notification from "@/components/global/Notificaction";
 import HorarioManager from "@/components/registrar_reserva/HorarioManager";
 import {useRouter} from "next/navigation";
-import Loader from "@/components/global/Loader";
 
 const { protocol, domain, port } = server;
 const url = `${protocol}://${domain}:${port}`;
@@ -37,13 +36,14 @@ const RegistrarReserva = () => {
 				Authorization: "Bearer " + token,
 			},
 		})
-        .then((res) =>
-				res.map((el) => ({
-				    dia: el.diaDisponibilidad,
-					incio: el.horaInicio,
-                    fin: el.horaFin
-				}))
-		)
+        .then((res) =>{
+            return res.map((el) => ({
+                dia: el.diaDisponibilidad,
+                incio: el.horaInicio,
+                fin: el.horaFin,
+                horaMin:el.horaMin
+            }))
+        })
         .then((disp) => {
             setDisponibilidad(disp)
 		});
@@ -64,7 +64,6 @@ const RegistrarReserva = () => {
 		setCronograma({ ...cronograma, [dia]: horario });
 	};
     const handleErrorCronograma=(error,flag)=>{
-
         if(flag!=='del'){  
             setErrorCronograma({...errorCronograma,[error]:error})  
         }else{
@@ -106,14 +105,19 @@ const RegistrarReserva = () => {
             'cronograma':Object.values(cronograma),
             'cumple':caracteristicas
         }),{'max-age': 3600})
-
-        router.push('/estudiante/reservar_recurso')
+        
+        router.push('/estudiante/reservar_recurso?query='+JSON.stringify({
+    	        'tipo':selectedTipoOption,
+                'cronograma':Object.values(cronograma),
+                'cumple':caracteristicas
+            })
+        )
 	};
 
 	return (
         <>
             <div className={styles.container}>
-                <h2 className={styles.title}>Realizar reserva</h2>
+                <h2 className={styles.title}>Buscar Recursos</h2>
                 <div className={styles.form + " " + styles.boxShadow}>
                     {/*Add filter y Tipo de recurso*/}
                     <section className={styles.inputs + " " + styles.flexCol}>

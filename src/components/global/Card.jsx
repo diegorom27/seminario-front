@@ -1,4 +1,4 @@
-import styles from '../../assets/cardStyles.css'
+import '../../assets/cardStyles.css'
 const Card=({front,back})=>{
     return(
         <article className={"card flipCard"}>

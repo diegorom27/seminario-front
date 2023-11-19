@@ -15,6 +15,10 @@ const routes = [
       path: '/estudiante/ver_reserva',
       symbol: 'token'
     },{
+      name: 'Creditos',
+      path: '/estudiante/creditos',
+      symbol: 'token'
+    },{
       name: 'Log out',
       path: '/',
       symbol: 'Logout'

@@ -1,10 +1,3 @@
-:root {
-	--primary-color: rgba(255, 255, 255);
-	--second-color: linear-gradient(to right top,
-			rgb(33, 33, 33),
-			rgb(66, 66, 66));
-}
-
 * {
 	box-sizing: border-box;
 }
@@ -115,7 +108,7 @@ button {
 	opacity: 0.5;
 }
 
-@media (width < 1200px) {
+@media (width < 840px) {
     .sidebar {
         position: absolute;
         top: 0;
@@ -124,26 +117,61 @@ button {
         height: 70px;
         border-bottom-left-radius: 6px ;
         border-bottom-right-radius: 4px ;
-		background-image:transparent;
 		background:transparent;
-		transition: height 0.4s;
+		transition: background-image 6s;
 
-		.sidebar-inner,
-		.sidebar-header,
-		.sidebar-menu,
-		.sidebar-button,
-		.sidebar-burger {
-			background-image: transparent;
-			background: transparent;
-		}
 	}
-
+	
+	.sidebar-inner,
+	.sidebar-header,
+	.sidebar-menu,
+	.sidebar-button {
+		background-image: transparent;
+		background: transparent;
+	}
+	.sidebar-menu{
+		height: 100vh;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-content: center;
+		pointer-events: none;
+	}
+	.sidebar-menu button{
+		border-bottom:thin solid #fff5;
+		transition: background-color 300ms;
+	}
+	.sidebar-menu button:nth-child(1){
+		border-top:thin solid #fff5;
+	}
+	.sidebar-menu:hover{
+		background: rgb(0 0 0 / 30%);
+	}
+	.sidebar-header{
+		position: fixed;
+		bottom: 1rem;
+		left: 1px;
+		z-index: 999;
+		display: flex;
+		justify-content: flex-end;
+	}
+	.sidebar-burger{
+		border-radius: 100%;
+		width: 3rem;
+		height: 3rem;
+		line-height: 1rem;
+		margin-right: 1.5rem;
+		background-image: var(--second-color);
+		transition: background-image 300ms;
+	}
 	.sidebar.open {
 		min-height: 100vh;
 		height: fit-content;
 		width: 100%;
 		background-image: var(--second-color);
 		overflow-y: scroll;
+		transform: translateY(0%);
+		opacity: 1;
 
 		.sidebar-button{
 			display: flex;
@@ -151,6 +179,12 @@ button {
 			margin-left: auto;
 			margin-right: auto;
 			justify-content: center;
+		}
+		.sidebar-burger{
+			background: transparent;
+		}
+		.sidebar-menu{	
+			pointer-events: auto;
 		}
 		.inner-btn{
 			display: flex;

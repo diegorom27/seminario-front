@@ -1,126 +1,70 @@
 'use client'
 import { useEffect, useState } from "react"
 import Card from "@/components/global/Card"
+import Notification from "@/components/global/Notificaction";
 import styles from "./styles.module.css";
 import Image from 'next/image'
 import server from '@/assets/server.js'
-import { useRouter } from "next/navigation";
+import { useSearchParams , useRouter } from "next/navigation";
 import { getCookie } from "@/helpers/clientCookies";
 import { post } from '@/helpers/helperHttp'
+
 const ReservarRecurso=()=>{
     const {protocol,domain,port} = server
     const url = `${protocol}://${domain}:${port}`
     const router = useRouter()
     
+    const searchParams = useSearchParams()
+    const search = JSON.parse(searchParams.get('query'))
 
-    const [recursos,setRecursos]= useState([
-        {
-            "idRecurso": 1,
-            "descripcionRecurso": "Salon 401C.",
-            "nombreRecurso": "Salon 1",
-            "tipo": {
-                "idTipo": 4,
-                "nombreTipo": "Salón",
-                "tiempoMin": 2
-            }
-        },{
-            "idRecurso": 1,
-            "descripcionRecurso": "Salon 401C.",
-            "nombreRecurso": "Salon 1",
-            "tipo": {
-                "idTipo": 4,
-                "nombreTipo": "Salón",
-                "tiempoMin": 2
-            }
-        },{
-            "idRecurso": 1,
-            "descripcionRecurso": "Salon 401C.",
-            "nombreRecurso": "Salon 1",
-            "tipo": {
-                "idTipo": 4,
-                "nombreTipo": "Salón",
-                "tiempoMin": 2
-            }
-        }
-        ,{
-            "idRecurso": 1,
-            "descripcionRecurso": "Salon 401C.",
-            "nombreRecurso": "Salon 1",
-            "tipo": {
-                "idTipo": 4,
-                "nombreTipo": "Salón",
-                "tiempoMin": 2
-            }
-        },{
-            "idRecurso": 1,
-            "descripcionRecurso": "Salon 401C.",
-            "nombreRecurso": "Salon 1",
-            "tipo": {
-                "idTipo": 4,
-                "nombreTipo": "Salón",
-                "tiempoMin": 2
-            }
-        },,{
-            "idRecurso": 1,
-            "descripcionRecurso": "Salon 401C.",
-            "nombreRecurso": "Salon 1",
-            "tipo": {
-                "idTipo": 4,
-                "nombreTipo": "Salón",
-                "tiempoMin": 2
-            }
-        },{
-            "idRecurso": 1,
-            "descripcionRecurso": "Salon 401C.",
-            "nombreRecurso": "Salon 1",
-            "tipo": {
-                "idTipo": 4,
-                "nombreTipo": "Salón",
-                "tiempoMin": 2
-            }
-        }
-        ,{
-            "idRecurso": 1,
-            "descripcionRecurso": "Salon 401C.llllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll",
-            "nombreRecurso": "Salon 1",
-            "tipo": {
-                "idTipo": 4,
-                "nombreTipo": "Salón",
-                "tiempoMin": 2
-            }
-        },{
-            "idRecurso": 1,
-            "descripcionRecurso": "Salon 401C.",
-            "nombreRecurso": "Salon 1",
-            "tipo": {
-                "idTipo": 4,
-                "nombreTipo": "Salón",
-                "tiempoMin": 2
-            }
-        },
-    ])
-    /*
+    const [recursos,setRecursos]= useState([])
+    const [openNotificacion,setOpenNotificacion]=useState(false)
+    const [notificacionMessage,setNotificacionMessage]=useState('false')
+    const [notificacionError,setNotificacionError]=useState('false')
+
     useEffect(()=>{
-        let body = getCookie(document,'bodyFiltrar')
         let token = getCookie(document,'token')
-        console.log(body)
         post(url+'/'+'recurso/filtrar/',{
             headers: {
                 "Content-Type": "application/json;charset=utf-8",
                 Authorization: "Bearer " + token,
             },
-            body:JSON.parse(body)
+            body:search
 		})
         .then((res)=>{
-            console.log(res)
-            //setRecursos(res)
+            setRecursos(res)
         })
-    },[recursos])
-    */
+    },[])
+
+    const sendData=(idRecurso)=>{
+        let token = getCookie(document,'token')
+        let reserva={
+            "reserva": {
+                "estado": "En proceso",
+                "recurso": {
+                    idRecurso
+                }
+            },
+            "cronograma": search.cronograma
+        }
+        post(url+'/'+'reserva/guardar/',{
+            headers: {
+                "Content-Type": "application/json;charset=utf-8",
+                Authorization: "Bearer " + token,
+            },
+            body:reserva
+		}).then((res)=>{
+            setNotificacionError(true)
+            setOpenNotificacion(Math.random())
+            setNotificacionMessage("Buena mi bro")     
+            setTimeout(()=>router.push('/estudiante/inicio',0))
+        })
+    }
     return(
-        <div className={styles.cardsContainer+" "+styles.dinamycGrid}>
+        <>
+            <div className={styles.cardsContainer+" "+styles.dinamycGrid}>
             {
-                recursos.map((el,i)=>
+                recursos.length>0?recursos.map((el,i)=>
                     <Card key={'cardRecurso'+i}
                           front={
                             <div className={styles.cardInfo}>
@@ -138,14 +82,18 @@ const ReservarRecurso=()=>{
                           }
                           back={
                             <div className={styles.buttonSide}>
-                                <button className={styles.buttonReserva+' '+'anim-btn'}>Reservar</button> 
+                                <button className={styles.buttonReserva+' '+'anim-btn'} onClick={(e)=>sendData(el.idRecurso)}>Reservar</button> 
                             </div>
                           }
                     
                     />
-                )
+                ):<h3 className={styles.message}>No se encontraron recursos disponibles con las caracteristicas solicitadas 🤕.</h3>
             }
-        </div>
-    )
+            </div>
+            <Notification message={notificacionMessage} 
+                          sucess={notificacionError} 
+                          open={openNotificacion}/>
+        </>
+        )
 }
 export default ReservarRecurso

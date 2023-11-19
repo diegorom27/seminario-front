@@ -7,25 +7,31 @@
 .container{
     position: relative;
     top: 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
 }
 .form{
     background-color: var(--primary-color);
     border-radius: 10px;
-    box-shadow: 5px;
     margin-left:auto;
     margin-right: auto;
+    min-width: 57%;
     max-width: 40rem;
-
+    flex-grow: 1;
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows:max-content repeat(1,1fr) repeat(1,1fr) min-content;
 
     position: relative;
     
-    max-height: 26.3rem;
     overflow-y: scroll;
     overflow-x: hidden;
     scroll-behavior: smooth;
+
+    margin-bottom: 2rem;
 }
 .form::-webkit-scrollbar{
     display: none;
@@ -100,6 +106,7 @@
 }
 .flexRow{
     display: flex;
+    flex-wrap: wrap;
     flex-direction: row;
     gap:0.2rem;
 }

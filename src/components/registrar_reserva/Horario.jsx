@@ -16,7 +16,6 @@ const Horario=({styles,handleChange,verifyDisponibilidad,i,errorCronograma})=>{
             handleHorario(e)
         }
         if(dia!=null && horario?.horaInicio && horario?.horaFin){
-            console.log(dia,horario.horaInicio,horario.horaFin)
             verifyDisponibilidad(dia,horario.horaInicio,horario.horaFin,i)
         }
     }
@@ -27,7 +26,7 @@ const Horario=({styles,handleChange,verifyDisponibilidad,i,errorCronograma})=>{
     },[horario])
     return(
         <div className={styles.flexRow}>
-            <label>
+            <label style={{flexGrow:"1"}}>
                 <input  type="date"
                         placeholder=''
                         name='fecha'
@@ -37,7 +36,7 @@ const Horario=({styles,handleChange,verifyDisponibilidad,i,errorCronograma})=>{
                         required/>
                 <span >F.  inicio convocatoria</span>
             </label> 
-            <label>
+            <label style={{flexShrink:"1"}}>
                 <input  type="time"
                         placeholder=''
                         name='horaInicio'
@@ -47,7 +46,7 @@ const Horario=({styles,handleChange,verifyDisponibilidad,i,errorCronograma})=>{
                         required/>
                 <span >Hora inicio</span>
             </label>
-            <label>
+            <label style={{flexShrink:"1"}}>
                 <input  type="time"
                         placeholder=''
                         name='horaFin'

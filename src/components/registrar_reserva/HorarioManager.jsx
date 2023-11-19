@@ -18,17 +18,24 @@ const HorarioManager=({styles,disponibilidad,handleCronograma,handleErrorCronogr
     const verifyDisponibilidad=(dia,ini,fin,i)=>{
 
         let diaString=diasDeLaSemana[new Date(dia).getUTCDay()]
-        ini=ini+':00'
-        fin=fin+':00'
+        const fechaBase = new Date('1970-01-01');
+        let diff = (new Date(fechaBase.toDateString() + ' ' + fin)-new Date( fechaBase.toDateString() + ' '+  ini))/3600000
+        ini=ini
+        fin=fin
         if(!disponibilidad.some((el=>el.dia==diaString && 
-                                    el.incio<=ini &&
-                                    el.fin>=fin))){
+                                    el.incio<=ini+':00' &&
+                                    el.fin>=fin+':00'))){
             handleErrorCronograma(`${i}D`)
             showNotificationMessage(false,`Los unicos dias posibles son:\n ${diasDisponibles}`)
         }else{
             handleErrorCronograma(`${i}D`,'del')
         }
-
+        if(diff%disponibilidad[0].horaMin!=0){
+            handleErrorCronograma(`${i}L`)
+            showNotificationMessage(false,`El tiempo minimo es de: ${disponibilidad[0].horaMin}`)
+        }else{
+            handleErrorCronograma(`${i}L`,'del')
+        }
         if(fin<=ini){
             handleErrorCronograma(`${i}M`)
             showNotificationMessage(false,`La fecha de inicio debe ser menor que la hora de Fin`)

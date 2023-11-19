@@ -1,0 +1,20 @@
+@keyframes star-wars {
+    0%{
+        transform: perspective(100vh) rotateX(35deg) translateY(100%) scale(1.8);
+    }
+    75%{
+        opacity: 1;  
+    }
+    100%{
+        transform: perspective(100vh) rotateX(38.5deg) translateY(-155%) scale(1.5);
+        opacity: 0;   
+    }
+}
+.starwars-text{
+    color: rgb(255, 191, 71);
+    animation: star-wars 10s ease-out infinite both;
+    display: flex;
+    text-align: center;
+    font-size: 4vh;
+    font-family: 'Franklin Gothic Medium', sans-serif;
+}
