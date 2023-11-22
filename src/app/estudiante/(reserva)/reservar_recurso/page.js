@@ -38,9 +38,13 @@ const ReservarRecurso=()=>{
 
     const sendData=(idRecurso)=>{
         let token = getCookie(document,'token')
+        let idUsuario = getCookie(document,'idUsuario')
         let reserva={
             "reserva": {
-                "estado": "En proceso",
+                "estado": "proceso",
+                "usuario": {
+                    "idUsuario": idUsuario
+                },
                 "recurso": {
                     idRecurso
                 }

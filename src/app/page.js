@@ -7,9 +7,11 @@ import server from '@/assets/server.js'
 import { useModal } from '@/components/CustomHooks/useModal'
 import ModalPortal from '@/components/global/Modal'
 import { useRouter } from 'next/navigation'
-const {protocol,domain,port} = server
 
+const {protocol,domain,port} = server
 const url = `${protocol}://${domain}:${port}`
+let date = new Date();
+date.setDate(date.getDate() + 7);
 
 const initialForm={
     correo:'',
@@ -41,17 +43,22 @@ const redirect=async(router)=>{
   //falta logica para acceso a los demas tipos de usuario
   const rol = await res?.rol?.nombreRol || null
   if(rol=='NORMAL'){
+    setCookie(document,'rol', res.rol.nombreRol, {expires: date, 'max-age': 3600});
+    setCookie(document,'idUsuario', res.idUsuario, {expires: date, 'max-age': 3600});
     router.push('/estudiante/inicio')
+  }
+  if(rol=='ADMIN'){
+    setCookie(document,'rol', res.rol.nombreRol, {expires: date, 'max-age': 3600});
+    setCookie(document,'idUsuario', res.idUsuario, {expires: date, 'max-age': 3600});
+    router.push('/empleado/inicio')
   }
 }
 
 const submit=async({correo,password})=>{
-    await new Promise(resolve=>setTimeout(resolve,500))
-    
     return post(`${protocol}://${domain}:${port}/token/generar/`,{
         body:{
             'username':correo,
-            'contrasena':password
+            'password':password
         },
         isFormData:false,
         headers: {
@@ -82,11 +89,7 @@ export default function Home() {
     success
   } = useForm(initialForm,constraints,submit,(success,res)=>{
     openModal()
-    !success && setTimeout(()=>{
-      let date = new Date();
-
-      date.setDate(date.getDate() + 7);
-
+    success && setTimeout(()=>{
       //delete cookies
       deleteCookie(document,'token')
       deleteCookie(document,'password')
@@ -99,7 +102,7 @@ export default function Home() {
       
       redirect(router)
 
-    },500)
+    },200)
   }) 
 
   const dispayAgain=(e)=>{

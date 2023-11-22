@@ -6,8 +6,6 @@ import server from '../../assets/server.js'
 import { useModal } from '../../components/CustomHooks/useModal'
 import ModalPortal from '../../components/global/Modal'
 import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
-
 const {protocol,domain,port} = server
 
 const initialForm={
@@ -54,8 +52,6 @@ const constraints=({correo,password,password2,esGuapo,nombre})=>{
 }
 
 const submit=async({correo,password,esGuapo,nombre})=>{
-    await new Promise(resolve=>setTimeout(resolve,1000))
-    
     return post(`${protocol}://${domain}:${port}/usuario/guardar/`,{
         body:{
             'username':correo,
@@ -91,9 +87,9 @@ const FormularioRegistro=()=>{
         success
     } = useForm(initialForm,constraints,submit,(success)=>{
         openModal()
-        !success && setTimeout(()=>{
+        success && setTimeout(()=>{
             router.push('/')
-        },1500)
+        },500)
     }) 
     
     const dispayAgain=(e)=>{
@@ -112,8 +108,7 @@ const FormularioRegistro=()=>{
     }
     return(
         <div className={styles.container}>
-            <form className={styles.form+' '+styles.boxShadow}
-                  onSubmit={(e)=>handleSubmit(e)}>
+            <form className={styles.form+' '+styles.boxShadow}>
                 <div className={styles.title+' '+styles.flexCol+' '+styles.boxShadow}>
                     <h4>Hello my Doggie - Sign up</h4>
                 </div> 
@@ -180,12 +175,12 @@ const FormularioRegistro=()=>{
                     {errors?.esGuapo && <small name="esGuapo" className={styles.errorGuapo+' '+styles.error}>{errors.esGuapo}</small>}
                 </div>
                 <div className={styles.buttons+' '+styles.flexCol}>
-                    <button className='anim-btn'>SIGN UP</button>
+                    <button className='anim-btn' onClick={(e)=>handleSubmit(e)}>SIGN UP</button>
                 </div>
             </form>
             <ModalPortal isOpen={isOpen} closeModal={closeModal}>
                 <h3>{success?'Registro exitoso':'ERROR'}</h3>
-                <p className={(success==true)?'success':styles.err}>{message}</p>
+                <p className={success?'success':styles.err}>{message}</p>
             </ModalPortal>
         </div>
     )

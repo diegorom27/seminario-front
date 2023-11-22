@@ -1,0 +1,172 @@
+.container *::before,.container *::before{    
+    box-sizing: border-box;
+    border-width: 0;
+    border-color: #eeeeee;
+    height: 100%;
+}
+.container{
+    position: relative;
+    top: 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+.form{
+    background-color:  red;
+    border-radius: 10px;
+    margin-left:auto;
+    margin-right: auto;
+    min-width: 57%;
+    max-width: 40rem;
+    flex-grow: 1;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows:max-content repeat(1,1fr) repeat(1,1fr) min-content;
+
+    position: relative;
+    
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    margin-bottom: 2rem;
+}
+.form::-webkit-scrollbar{
+    display: none;
+}
+.inputs{
+    margin: 1.5rem;
+    margin-top: 1px;
+    padding-top: 0.7rem;
+    gap: 0.6rem;
+}
+.flexRow{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    gap:0.2rem;
+    height: 3.5rem;
+}
+.button{
+    background-image: linear-gradient(to right top, rgb(33, 33, 33), rgb(66, 66, 66)) !important;
+    color: var(--primary-color);
+    border-radius: 6px;
+    padding: 0.8rem 1.5rem;
+    flex-grow: 1;
+    font-family: Roboto, sans-serif;
+    font-size: 0.77rem;
+    font-style:normal;
+    font-weight: bolder;
+}
+.button[type='submit']{
+    position: relative;
+    flex-shrink: 1;
+    bottom: 0;
+}
+.boxShadow{
+    -webkit-box-shadow: 0px 11px 7px -3px rgb(33 33 33 / 0.2);
+    -moz-box-shadow: 0px 11px 7px -3px rgb(33 33 33 / 0.2);
+    box-shadow: 0px 2px 11px -3px rgb(33 33 33 / 0.2);
+}
+
+.inputs{
+    margin: 1.5rem;
+    margin-top: 1px;
+    padding-top: 0.7rem;
+    gap: 0.6rem;
+    background-color: var(--primary-color);
+    padding: 1rem;
+    border-radius: 6px;
+    width: 24rem;
+    height: 13rem;
+}
+.inputs div{
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    flex-shrink: 1;
+    gap: 0.5rem;
+}
+.inputs div *{
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+.inputs input{
+    background: rgba(0, 0, 0, 0);
+    border:1px solid rgb(176, 190, 197);
+    font-stretch:100%;
+    font-weight: 400;
+    tab-size: 4;
+    height: 3.3rem;
+    border-radius: 6px;
+    padding: 0.7rem;
+    width: 100%;
+    height: 3rem;
+    flex-shrink: 1;
+}
+.inputs label {
+  position:relative;
+  display:inline-block;
+}
+.inputs span {
+  padding:0.8rem;
+  pointer-events: none;
+  position:absolute;
+  left:4px;
+  top:0;
+  transition: 0.2s;
+  transition-timing-function: ease;
+  transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+  opacity:0.9;
+  font-size: 0.9rem;
+  font-family: Roboto, sans-serif;
+  font-stretch: 100%;
+  display: flow-root;
+  color: rgb(69, 90, 100);
+}
+.inputs input:focus + span,
+.inputs input:not(:placeholder-shown) + span {
+  opacity:1;
+  transform: scale(0.75) translateY(-70%) translateX(-10px);
+  background: var(--primary-color);
+  padding: 0;
+}
+
+.inputs input:focus + span,
+.inputs input:not(:-ms-input-placeholder) + span {
+    opacity:1;
+    transform: scale(0.75) translateY(-70%) translateX(-10px);
+    background: var(--primary-color);
+    padding: 0; 
+}
+.flexCol{
+    display: flex;
+    flex-direction: column;
+}
+.title{
+    font-size: 2.3rem; 
+    font-weight: bolder;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1.5rem;
+    margin-bottom: -2rem;
+    text-align: center;
+}
+.select{
+    border: 1.8px solid rgb(186, 196, 204);
+    border-radius: 0.3rem;
+    padding: 0.5rem;
+    height: 3rem;
+}
+.select label{
+    color:  rgb(69, 90, 100);
+    background: var(--primary-color);
+    display: inline-block;
+    width: fit-content;
+    position: relative;
+    font-size: calc(18px * 0.75);
+    left: 0.3rem;
+    top: 1.1rem;
+    z-index: 2;
+}

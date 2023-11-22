@@ -1,22 +1,25 @@
-import NavBar from '../../components/global/NavBar.jsx'
+import NavBar from '../../components/global/NavBar'
 
 const routes = [
     {
       name: 'Inicio',
-      path: '/estudiante/inicio',
+      path: '/empleado/inicio',
       symbol: 'Home'
-    },
-    {
-      name: 'Reservar',
-      path: '/estudiante/buscar_recurso',
-      symbol: 'token'
-    }, {
+    },{
       name: 'Ver reservas',
-      path: '/estudiante/ver_reservas',
+      path: '/empleado/ver_reservas',
       symbol: 'token'
     },{
+      name: 'Ver prestamos',
+      path: '/empleado/ver_prestamos',
+      symbol: 'token'
+    },{
+        name: 'Ver retornos',
+        path: '/empleado/ver_retornos',
+        symbol: 'token'
+    },{
       name: 'Creditos',
-      path: '/estudiante/creditos',
+      path: '/empleado/creditos',
       symbol: 'token'
     },{
       name: 'Log out',

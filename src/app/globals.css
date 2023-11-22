@@ -37,6 +37,7 @@ body {
     )
     rgb(var(--background-start-rgb));
     height: 100%;
+  background-image: url(https://www.xtrafondos.com/wallpapers/degradado-difuminado-verde-7936.jpg);
   min-height: 100vh;
 }
 /*animated buttons*/

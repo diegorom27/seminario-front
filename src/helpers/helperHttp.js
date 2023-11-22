@@ -17,10 +17,9 @@ const fetchFunction=async(endpoint,options={})=>{
     }
     delete options.isFormData
 
-    setTimeout(()=>controller.abort(),6000)
+    setTimeout(()=>controller.abort(),8000)
 
     try{
-
         const res = await fetch(endpoint,options)
         const json = await res.json()
         if(res?.ok===false)return json
