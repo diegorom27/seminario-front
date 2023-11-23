@@ -41,7 +41,7 @@ const ver_reservas=()=>{
     
     const guardarPrestamo=async(fechaEntrega,idReserva,fechaReserva,callback)=>{
 
-        if(!(new Date(fechaReserva)==new Date(fechaEntrega))){
+        if(!(new Date(fechaReserva)!==new Date(fechaEntrega))){
             alert('Solo es posible entregar los articulos en el dia y horario reservado')
             return
         }
@@ -70,7 +70,6 @@ const ver_reservas=()=>{
                 'Authorization':"Bearer "+token
                 }
         }).then((res)=>{
-            console.log(res)
             if(res.ok===false){
                 setPrestamo([])
                 return
