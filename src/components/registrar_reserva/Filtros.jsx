@@ -1,5 +1,5 @@
 'use client'
-import styles from './Filtros.module.css'
+import styles from '@/assets/Filtros.module.css'
 
 const Filtros=({filtros,handleFiltrosValores})=>{
     return(
