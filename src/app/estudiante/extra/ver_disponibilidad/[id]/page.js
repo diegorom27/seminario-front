@@ -1,23 +1,32 @@
 'use client'
-import {get,put} from '@/helpers/helperHttp'
+import {get,post} from '@/helpers/helperHttp'
 import server from '@/assets/server.js'
 import Table from '@/components/global/Table'
 import styles from './styles.module.css'
 import { getCookie} from "@/helpers/clientCookies.js";
 import {useEffect, useState } from 'react'
+import {useRouter} from 'next/navigation'
 const {protocol,domain,port} = server
 
 const initialForm={
-    'id':null
+    'fecha':null
 }
 const url = `${protocol}://${domain}:${port}`;
 
-const ver_prestamos=()=>{
+function obtenerDiaSemana(numero) {
 
+    const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado','Domingo'];
+    const nombreDia = dias[numero];
+  
+    return nombreDia;
+  }
+
+const ver_disponibilidad=(req)=>{
+    const router = useRouter()
+    const {id} = req.params
     const [form,setForm] = useState(initialForm)
-    const [prestamos,setPrestamo] = useState([])
+    const [fechas,setFechas]=useState([])
     const [fechaActual,setFechaActual]=useState(null)
-
     useEffect(()=>{
         let fechaActual = new Date();
 
@@ -29,6 +38,7 @@ const ver_prestamos=()=>{
         let fechaFormateada = año + '-' + mes + '-' + dia;
         setFechaActual(fechaFormateada)
     },[])
+
     const handleChange=(e)=>{
         setForm({
             ...form,
@@ -36,37 +46,51 @@ const ver_prestamos=()=>{
         })
     }
     
-    const devolverPrestamo=async(fechaEntrega,idReserva,callback)=>{
+    const reservar=async(id,fecha,start,end,callback)=>{
         let token = getCookie(document, "token");
-        get(`${url}/prestamo/actualizarFechaDePrestamo/${idReserva}/${fechaEntrega}`,{
+        post(`${url}/api/guardarRecurso/`,{
             headers: {
                 'Content-Type': "application/json;charset=utf-8",
                 'Authorization':"Bearer "+token
-            }
+            },body:{
+                "resourceId": id,
+                "startTime": start,
+                "endTime": end,
+                "date": fecha,
+                "observations": "Se presta el salon"
+            },
+            cache: "no-store"
         }).then((res)=>{
-            console.log(res)
-            callback()
+            callback(res)
         })
+        router.reload()
     }
 
-    const handleBuscarPrestamos=async()=>{
+    const buscarDisponibilidad=async()=>{
         let token = getCookie(document, "token");
-        get(`${url}/prestamo/listarPrestados/${form.id}`,{
+        if(form.fecha===null){
+            alert('Debe seleccionar una fecha')
+            return
+        }
+        if(new Date(fechaActual)>new Date(form.fecha)){
+            alert('La fecha debe ser mayor a la actual')
+            return
+        }
+        get(`${url}/api/listarRecursosPorIdYFecha/${id}/${form.fecha}`,{
             headers: {
                 'Content-Type': "application/json;charset=utf-8",
                 'Authorization':"Bearer "+token
             }
         }).then((res)=>{
             if(res.ok===false){
-                setPrestamo([])
+                setFechas([])
                 return
             }
-            setPrestamo(res.map((el,i)=>[el.reserva.recurso.nombreRecurso,el.reserva.fechaReserva,el.fechaEntrega,
-                <button key={'btnPres'+i} onClick={()=>devolverPrestamo(fechaActual,el.idPrestamo,handleBuscarPrestamos)}>Devolver</button>
+            setFechas(res.dateAvailabilities.map((el,i)=>[el.startTime,el.endTime,obtenerDiaSemana(el.day),
+                el.isAvailable?<button key={'btnPres'+i} onClick={()=>reservar(id,form.fecha,el.startTime,el.endTime,console.log('hola'))}>Reservar</button>:'ocupada'
             ]))
         })
     } 
-
     return(
         <>
         <h2 className={styles.title}>Buscar Prestamos</h2>
@@ -81,18 +105,17 @@ const ver_prestamos=()=>{
                                             }}>
                         <div className={styles.flexRow}>
                             <label style={{flexGrow:"1"}}>
-                                <input type="number" 
-                                    name='id' 
+                                <input type="date" 
+                                    name='fecha' 
                                     onChange={(e)=>handleChange(e)}
                                     required/>
-                                    <span > Id</span>
+                                    <span > Fecha</span>
                             </label>
                         </div>
                         <button type='submit'
                                 className={styles.button+' '+'anim-btn'} 
-                                onClick={(e)=>{ console.log('hola')
-                                                e.preventDefault()
-                                                handleBuscarPrestamos()}}>Buscar Prestamos</button>
+                                onClick={(e)=>{ e.preventDefault()
+                                                buscarDisponibilidad()}}>Buscar fechas</button>
                     </form>
                 </section>
            </div>
@@ -100,9 +123,9 @@ const ver_prestamos=()=>{
             'Nombre Recurso',
             'Fecha Reserva',
             'Fecha Entrega',
-            'Actions']} data={prestamos}/>
+            'Actions']} data={fechas}/>
         </div>
         </>
     )
 }
-export default ver_prestamos
+export default ver_disponibilidad

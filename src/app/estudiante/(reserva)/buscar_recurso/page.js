@@ -1,7 +1,7 @@
 "use client";
 import {useState } from "react";
-import {get } from "../../../../helpers/helperHttp";
-import { getCookie, setCookie } from "../../../../helpers/clientCookies.js";
+import {get } from "@/helpers/helperHttp";
+import { getCookie, setCookie } from "@/helpers/clientCookies.js";
 import styles from "./styles.module.css";
 import server from "@/assets/server";
 import SelectManager from "@/components/registrar_reserva/SelectManager";

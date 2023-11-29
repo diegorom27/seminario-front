@@ -19,10 +19,14 @@ const routes = [
       path: '/estudiante/creditos',
       symbol: 'token'
     },{
+      name:'extra',
+      path:'/estudiante/extra/ver_recursos',
+      symbol:'token'
+    },{
       name: 'Log out',
       path: '/',
       symbol: 'Logout'
-    },
+    }
   ]  
 
 export default function Layout ({ children }) {
